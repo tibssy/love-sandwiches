@@ -14,7 +14,7 @@ GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
 SHEET = GSPREAD_CLIENT.open('love_sandwiches')
 
 
-def get_sales_data():
+def get_sales_data() -> list:
     """
     Get sales figures input from the user.
     Run a while loop to collect a valid string of data from the user
@@ -35,7 +35,7 @@ def get_sales_data():
 
     return [int(val) for val in sales_data]
 
-def validate_data(values):
+def validate_data(values: list) -> bool:
     """
     Inside the try, converts all string values into integers.
     Raises ValueError if strings cannot be converted into int,
@@ -52,36 +52,35 @@ def validate_data(values):
         return True
 
 
-def update_worksheet(worksheet, data):
+def update_worksheet(worksheet: str, data: list) -> None:
     """
     Update worksheet, add new row with the list data provided.
     """
 
-    worksheet = SHEET.worksheet(worksheet)
-    worksheet.append_row(data)
+    print(f'Updating {worksheet} worksheet...\n')
+    worksheet_to_update = SHEET.worksheet(worksheet)
+    worksheet_to_update.append_row(data)
+    print(f'{worksheet.capitalize()} worksheet updated successfully.\n')
 
 
-def update_sales_worksheet(data):
+def update_sales_worksheet(data: list) -> None:
     """
     Update sales worksheet.
     """
 
-    print('Updating sales worksheet...\n')
     update_worksheet('sales', data)
-    print('Sales worksheet updated successfully.\n')
 
 
-def update_surplus_worksheet(data):
+
+def update_surplus_worksheet(data: list) -> None:
     """
     Update surplus worksheet.
     """
 
-    print('Updating surplus worksheet...\n')
     update_worksheet('surplus', data)
-    print('Surplus worksheet updated successfully.\n')
 
 
-def calculate_surplus_data(sales_row):
+def calculate_surplus_data(sales_row: list) -> list:
     """
     Compare sales with stock and calculate the surplus for each item type.
     The surplus is defined as the sales figure subtracted from the stock:
