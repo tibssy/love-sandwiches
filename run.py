@@ -1,5 +1,6 @@
 import gspread
 from google.oauth2.service_account import Credentials
+import numpy as np
 
 
 SCOPE = [
@@ -79,6 +80,19 @@ def calculate_surplus_data(sales_row: list) -> list:
     return [int(stock) - sales for stock, sales in zip(stock_row, sales_row)]
 
 
+def calculate_stock_data() -> list:
+    """
+    Collecting the last 5 entries for each sandwich and
+    calculate the average stock for each item type, adding 10%
+    """
+
+    print('Calculating stock data...\n')
+
+    sales_data = SHEET.worksheet('sales').get_all_values()[1:]
+    last_5_entries = np.array(sales_data[-5:]).astype(int)
+    return np.round(np.mean(last_5_entries, axis=0) * 1.1).astype(int).tolist()
+
+
 def main():
     """
     Run all program functions
@@ -88,6 +102,8 @@ def main():
     update_worksheet('sales', sales_data)
     new_surplus_data = calculate_surplus_data(sales_data)
     update_worksheet('surplus', new_surplus_data)
+    stock_data = calculate_stock_data()
+    update_worksheet('stock', stock_data)
 
 
 if __name__ == '__main__':
