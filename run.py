@@ -63,23 +63,6 @@ def update_worksheet(worksheet: str, data: list) -> None:
     print(f'{worksheet.capitalize()} worksheet updated successfully.\n')
 
 
-def update_sales_worksheet(data: list) -> None:
-    """
-    Update sales worksheet.
-    """
-
-    update_worksheet('sales', data)
-
-
-
-def update_surplus_worksheet(data: list) -> None:
-    """
-    Update surplus worksheet.
-    """
-
-    update_worksheet('surplus', data)
-
-
 def calculate_surplus_data(sales_row: list) -> list:
     """
     Compare sales with stock and calculate the surplus for each item type.
@@ -102,9 +85,9 @@ def main():
     """
 
     sales_data = get_sales_data()
-    update_sales_worksheet(sales_data)
+    update_worksheet('sales', sales_data)
     new_surplus_data = calculate_surplus_data(sales_data)
-    update_surplus_worksheet(new_surplus_data)
+    update_worksheet('surplus', new_surplus_data)
 
 
 if __name__ == '__main__':
